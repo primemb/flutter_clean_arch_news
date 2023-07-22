@@ -21,8 +21,13 @@ class ArticleRepositoryImpl implements ArticleRepository {
         category: categoryQuery,
       );
 
+      List<ArticleModel> articles =
+          (httpResponse.data['articles'] as List<dynamic>)
+              .map((e) => ArticleModel.fromJson(e))
+              .toList();
+
       if (httpResponse.response.statusCode == HttpStatus.ok) {
-        return DataSuccess(httpResponse.data);
+        return DataSuccess(articles);
       } else {
         return DataFiled(DioException(
           error: httpResponse.response.statusMessage,
